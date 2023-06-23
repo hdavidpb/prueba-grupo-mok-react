@@ -1,6 +1,6 @@
 import { createContext } from "react";
 import { UsersState } from "..";
-import { ISortByType } from "../../interfaces/users.interfaces";
+import { ISortByType, IUser } from "../../interfaces/users.interfaces";
 
 interface ContextProps extends UsersState {
   getUserList: () => void;
@@ -9,6 +9,9 @@ interface ContextProps extends UsersState {
   handleRestoreState: () => void;
   handleFilterUserByCountry: (country: string) => void;
   handleDeleteUser: (userID: string) => void;
+  handleSelectedUser: (user?: IUser) => void;
+  handleSetPaginatedUser: (users: IUser[]) => void;
+  handleSetCurrentPage: (page: number) => void;
 }
 
 export const UsersContext = createContext({} as ContextProps);

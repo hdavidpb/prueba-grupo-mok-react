@@ -85,9 +85,13 @@ export interface Picture {
 export interface IUser {
   id: string;
   image: string;
+  title: string;
   name: string;
   lastName: string;
   country: string;
+  city: string;
+  phone: string;
+  email: string;
 }
 
 export type ISortByType = "country" | "name";

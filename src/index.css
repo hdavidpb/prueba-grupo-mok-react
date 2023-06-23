@@ -28,7 +28,13 @@ button:hover {
 button:focus {
   border-color: rgba(18, 99, 239, 0.89);
 }
-
+button:disabled {
+  background-color: gray;
+  color: rgba(212, 204, 204, 0.466);
+}
+button:disabled:hover {
+  border-color: gray;
+}
 table {
   width: 100%;
   display: table;

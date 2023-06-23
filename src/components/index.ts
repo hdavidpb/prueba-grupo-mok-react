@@ -1,3 +1,5 @@
 export * from "./Header";
-export * from "./Main";
 export * from "./Table";
+export * from "./TableListItem";
+export * from "./SimplePagination";
+export * from "./Loader";

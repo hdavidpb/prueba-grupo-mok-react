@@ -8,11 +8,19 @@ export type UsersActionType =
       payload: IUser[];
     }
   | {
+      type: "[Users] - SELECT-USER";
+      payload: IUser | undefined;
+    }
+  | {
       type: "[Users] - SORT-USERS";
       payload: IUser[];
     }
   | {
       type: "[Users] - FILTER-USERS-BY-COUNTRY";
+      payload: IUser[];
+    }
+  | {
+      type: "[Users] - PAGINATION-USER";
       payload: IUser[];
     }
   | {
@@ -23,10 +31,22 @@ export type UsersActionType =
       };
     }
   | {
+      type: "[Users] - SET-USERS-CURRENT-PAGE";
+      payload: number;
+    }
+  | {
+      type: "[Users] - SET-USERS-TOTAL-PAGES";
+      payload: number;
+    }
+  | {
       type: "[Users] - CHANGE-ACTIVE-ROW-COLORS";
     }
   | {
       type: "[Users] - RESTORE-STATE";
+    }
+  | {
+      type: "[Users] - LOADING-USERS";
+      payload: boolean;
     };
 
 export const usersReducer = (
@@ -34,12 +54,22 @@ export const usersReducer = (
   action: UsersActionType
 ): UsersState => {
   switch (action.type) {
+    case "[Users] - LOADING-USERS":
+      return { ...state, isLoadingList: action.payload };
     case "[Users] - GET-USERS-DATA":
       return {
         ...state,
         usersList: action.payload,
         sortedUserList: action.payload,
       };
+    case "[Users] - SET-USERS-TOTAL-PAGES":
+      return { ...state, totalPages: action.payload };
+    case "[Users] - SET-USERS-CURRENT-PAGE":
+      return { ...state, currentPage: action.payload };
+    case "[Users] - PAGINATION-USER":
+      return { ...state, sortedUserList: action.payload };
+    case "[Users] - SELECT-USER":
+      return { ...state, selectedUser: action.payload };
     case "[Users] - CHANGE-ACTIVE-ROW-COLORS":
       return { ...state, activeRowColor: !state.activeRowColor };
     case "[Users] - SORT-USERS":
@@ -60,6 +90,11 @@ export const usersReducer = (
         ...state,
         activeRowColor: false,
         sortedUserList: localStorageService.getUserListStorage(),
+        currentPage: 1,
+        totalPages: Math.ceil(
+          localStorageService.getUserListStorage().length / 20
+        ),
+        itemsPerPage: 20,
       };
     default:
       return state;

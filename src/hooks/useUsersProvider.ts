@@ -11,14 +11,30 @@ interface Props {
 
 export const useUsersProvider = ({ state, dispatch }: Props) => {
   const getUserList = () => {
+    dispatch({ type: "[Users] - LOADING-USERS", payload: true });
+
     usersService
       .getUsersList()
       .then((response) => {
         const usersList = usersAdapter(response.results);
         localStorageService.setUserListStorage(usersList);
         dispatch({ type: "[Users] - GET-USERS-DATA", payload: usersList });
+        dispatch({ type: "[Users] - SET-USERS-CURRENT-PAGE", payload: 1 });
+        const totalPages = Math.ceil(usersList.length / state.itemsPerPage);
+        dispatch({
+          type: "[Users] - SET-USERS-TOTAL-PAGES",
+          payload: totalPages,
+        });
+        dispatch({ type: "[Users] - LOADING-USERS", payload: false });
       })
-      .catch(() => dispatch({ type: "[Users] - GET-USERS-DATA", payload: [] }));
+      .catch(() => {
+        dispatch({ type: "[Users] - GET-USERS-DATA", payload: [] }),
+          dispatch({ type: "[Users] - LOADING-USERS", payload: false });
+      });
+  };
+
+  const handleSelectedUser = (user?: IUser) => {
+    dispatch({ type: "[Users] - SELECT-USER", payload: user });
   };
 
   const handleActiveRowColor = () => {
@@ -53,6 +69,18 @@ export const useUsersProvider = ({ state, dispatch }: Props) => {
     const filteredUsers = state.usersList.filter((user) =>
       user.country.toLowerCase().includes(country.toLowerCase())
     );
+
+    if (filteredUsers.length === state.usersList.length) {
+      const newUsers = state.usersList.slice(
+        (state.currentPage - 1) * state.itemsPerPage,
+        state.currentPage * state.itemsPerPage
+      );
+      dispatch({
+        type: "[Users] - FILTER-USERS-BY-COUNTRY",
+        payload: newUsers,
+      });
+      return;
+    }
     dispatch({
       type: "[Users] - FILTER-USERS-BY-COUNTRY",
       payload: filteredUsers,
@@ -64,6 +92,7 @@ export const useUsersProvider = ({ state, dispatch }: Props) => {
     const newSortedUsers = state.sortedUserList.filter(
       (user) => user.id !== userID
     );
+
     dispatch({
       type: "[Users] - DELETE-USER",
       payload: { userList: newUsers, sortedList: newSortedUsers },
@@ -74,12 +103,23 @@ export const useUsersProvider = ({ state, dispatch }: Props) => {
     dispatch({ type: "[Users] - RESTORE-STATE" });
   };
 
+  const handleSetPaginatedUser = (users: IUser[]) => {
+    dispatch({ type: "[Users] - PAGINATION-USER", payload: users });
+  };
+
+  const handleSetCurrentPage = (page: number) => {
+    dispatch({ type: "[Users] - SET-USERS-CURRENT-PAGE", payload: page });
+  };
+
   return {
     getUserList,
     handleSortUser,
     handleDeleteUser,
+    handleSelectedUser,
     handleRestoreState,
     handleActiveRowColor,
+    handleSetCurrentPage,
+    handleSetPaginatedUser,
     handleFilterUserByCountry,
   };
 };
