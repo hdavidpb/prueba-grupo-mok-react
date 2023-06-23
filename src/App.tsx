@@ -17,7 +17,7 @@ function App() {
       <Header />
 
       {isLoadingList ? (
-        <Loader />
+        <Loader message="Cargando usuarios..." />
       ) : (
         <>
           <Table />
