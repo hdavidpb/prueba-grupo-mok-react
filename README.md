@@ -23,13 +23,13 @@
 
 - Adicinalmente agregue:
 
-1. Añadi una paginación para los 100 usuarios listandolos de a 20 usuarios por página.
-2. Añadi un modal que aparece al darle click a la file de cualquier usuario en donde se ve la información un poco mas detallada y campos adicionales.
+1. Añadi una paginación para los 100 usuarios listandolos de a 20 usuarios por página para mejorar el rendimiento de la aplicación y no renderizar la lista con los 100 usuarios al tiempo.
+2. Añadi un modal que aparece al darle click a la fila de cualquier usuario en donde se ve la información un poco mas detallada y campos adicionales.
 3. Agregue un componente con un mensaje de cargando usuarios.
 
 ## Consideraciones:
 
-- Realice este proyecto utilizando vite con Typescript ya que me parece una alternativa muy buena para tipar los datos y desarrollar de manera mas eficiente disminuyendo errores en desarrollo.
+- Realice este proyecto utilizando vite y use Typescript ya que me parece una alternativa muy buena para tipar los datos y desarrollar de manera mas eficiente disminuyendo errores en desarrollo.
 
 - Para el proyecto utilice el contexto de React para mantener el estado organizado en un solo lugar y global, utilice hooks como useReducer , useContext, useState, useEffect para manejar la logica.
 
