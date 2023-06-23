@@ -89,6 +89,7 @@ export const usersReducer = (
       return {
         ...state,
         activeRowColor: false,
+        usersList: localStorageService.getUserListStorage(),
         sortedUserList: localStorageService.getUserListStorage(),
         currentPage: 1,
         totalPages: Math.ceil(
